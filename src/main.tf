@@ -13,7 +13,7 @@ terraform {
     hostname     = "app.terraform.io"
     organization = "PagoPa"
     workspaces {
-      prefix = "prefix-"
+      name = "common-infra"
     }
   }
 }
