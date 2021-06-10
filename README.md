@@ -1,4 +1,4 @@
-# terraform-infrastructure-template
+# common-infra
 
 Terraform template repository for infrastructures projects
 
