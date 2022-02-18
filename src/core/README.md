@@ -20,12 +20,19 @@
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_grafana_service"></a> [grafana\_service](#module\_grafana\_service) | git::https://github.com/pagopa/azurerm.git//app_service | app-service-storage-mounts |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [azurerm_resource_group.grafana_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.90.0/docs/resources/resource_group) | resource |
+| [azurerm_role_assignment.grafana_monitoring_reader](https://registry.terraform.io/providers/hashicorp/azurerm/2.90.0/docs/resources/role_assignment) | resource |
+| [azurerm_storage_account.grafana_storage](https://registry.terraform.io/providers/hashicorp/azurerm/2.90.0/docs/resources/storage_account) | resource |
+| [azurerm_storage_share.grafana_volume](https://registry.terraform.io/providers/hashicorp/azurerm/2.90.0/docs/resources/storage_share) | resource |
+| [azurerm_storage_share_file.grafana_db](https://registry.terraform.io/providers/hashicorp/azurerm/2.90.0/docs/resources/storage_share_file) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/data-sources/group) | data source |
