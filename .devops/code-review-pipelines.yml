@@ -1,0 +1,136 @@
+pr:
+  autoCancel: false # prevent terraform state lock on new commits
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - 'src/*'
+      - '.devops/*'
+    exclude:
+      - 'src/k8s/*'
+
+parameters:
+  - name: 'DEV'
+    displayName: 'Run on DEV environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'UAT'
+    displayName: 'Run on UAT environment'
+    type: boolean
+    default: False
+    values:
+      - False
+      - True
+  - name: 'PROD'
+    displayName: 'Run on PROD environment'
+    type: boolean
+    default: False
+    values:
+      - False
+      - True
+
+variables:
+  TIME_OUT: 5
+
+pool:
+  vmImage: 'ubuntu-20.04'
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v19
+      endpoint: 'azure-devops-github-ro'
+
+stages:
+  - stage: DEV
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
+    pool:
+      name: common-dev-linux
+    jobs:
+      - job: terraform_plan_pillar
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terraform plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: DEV-SERVICE-CONN
+              ENVIRONMENT: dev
+              WORKINGDIR: 'src/pillar'
+      - job: terraform_plan_core
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terraform plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: DEV-SERVICE-CONN
+              ENVIRONMENT: dev
+              WORKINGDIR: 'src/core'
+
+  - stage: UAT
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
+    pool:
+      name: common-uat-linux
+    jobs:
+      - job: terraform_plan_pillar
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terraform plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: UAT-SERVICE-CONN
+              ENVIRONMENT: uat
+              WORKINGDIR: 'src/pillar'
+      - job: terraform_plan_core
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terraform plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: UAT-SERVICE-CONN
+              ENVIRONMENT: uat
+              WORKINGDIR: 'src/core'
+
+  - stage: PROD
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    pool:
+      name: common-prod-linux
+    jobs:
+      - job: terraform_plan_pillar
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terraform plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-SERVICE-CONN
+              ENVIRONMENT: prod
+              WORKINGDIR: 'src/pillar'
+      - job: terraform_plan_core
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terraform plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-SERVICE-CONN
+              ENVIRONMENT: prod
+              WORKINGDIR: 'src/core'
