@@ -1,8 +1,8 @@
 [![Static Analysis](https://github.com/pagopa/common-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main)](https://github.com/pagopa/common-infra/actions/workflows/static_analysis.yml)
 
-# userregistry-infra
+# common-infra
 
-UserRegistry infra project
+Common PagoPA infra project
 
 ## Flow of installation
 
