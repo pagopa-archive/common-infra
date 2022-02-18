@@ -1,4 +1,4 @@
-[![Static Analysis](https://github.com/pagopa/userregistry-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main)](https://github.com/pagopa/userregistry-infra/actions/workflows/static_analysis.yml)
+[![Static Analysis](https://github.com/pagopa/common-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main)](https://github.com/pagopa/common-infra/actions/workflows/static_analysis.yml)
 
 # userregistry-infra
 
